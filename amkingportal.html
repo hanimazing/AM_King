@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A M KING &bull; FASTSIGNS Signage Ordering & Approval Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Franklin+Gothic+Medium&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amk: {
+              950: '#0B0D10',
+              900: '#12151B',
+              850: '#171B22',
+              800: '#1F242D',
+              700: '#2E3543',
+              600: '#475368',
+              orange: '#EA580C',
+              orangeDark: '#C2410C',
+              gold: '#D97706'
+            },
+            fs: {
+              red: '#D90429',
+              darkred: '#AF0420',
+              accent: '#EF233C'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            sign: ['"Franklin Gothic Medium"', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .sign-shadow {
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7), 0 10px 15px -5px rgba(0, 0, 0, 0.5);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #12151B;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #2E3543;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #475368;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printArea, #printArea * {
+        visibility: visible;
+      }
+      #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        color: #000;
+        background: #fff;
+      }
+    }
+  </style>
+</head>
+<body class="bg-amk-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-fs-red selection:text-white">
+
+  <!-- TOP APP BAR -->
+  <header class="bg-amk-900 border-b border-amk-800 sticky top-0 z-40 shadow-2xl backdrop-blur-md bg-opacity-95">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Block -->
+        <div class="flex items-center space-x-5">
+          <div class="flex items-center space-x-3.5 pr-5 border-r border-amk-800">
+            <div class="bg-white text-amk-950 font-sign font-extrabold text-2xl tracking-tighter px-3 py-1 rounded shadow-sm">
+              A&bull;M&bull;K
+            </div>
+            <div>
+              <div class="font-sign tracking-wider text-xl font-bold text-white uppercase leading-none">A&bull;M&bull;KING</div>
+              <div class="text-[10px] text-slate-400 tracking-widest uppercase font-medium mt-1">Design &bull; Construction &bull; Facilities</div>
+            </div>
+          </div>
+          
+          <div class="hidden md:flex items-center space-x-2.5 text-xs text-slate-400">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></span>
+            <span>Dedicated Fabricator:</span>
+            <span class="font-bold text-white bg-amk-800 px-2 py-1 rounded border border-amk-700">FASTSIGNS&reg; Charlotte</span>
+          </div>
+        </div>
+
+        <!-- Right Quick Actions -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <button onclick="scrollToProjectMeta()" class="hidden sm:flex text-xs font-semibold text-slate-300 hover:text-white items-center space-x-1.5 bg-amk-850 hover:bg-amk-800 border border-amk-700 px-3 py-2 rounded-lg transition">
+            <svg class="w-4 h-4 text-amk-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span id="headerProjectBadge">Project: Set Info</span>
+          </button>
+
+          <button onclick="toggleCartDrawer()" class="relative bg-fs-red hover:bg-fs-darkred text-white px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider flex items-center space-x-2 transition shadow-lg shadow-fs-red/25 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span>Job Requisition</span>
+            <span id="cartCountBadge" class="bg-white text-amk-950 text-xs font-black rounded-full px-2 py-0.5 ml-1">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sub-Header Compliance / Marketing Notice -->
+    <div class="bg-amber-950/40 border-t border-b border-amber-800/40 px-4 py-2 text-xs text-amber-200">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5">
+        <div class="flex items-center space-x-2">
+          <span class="font-extrabold uppercase tracking-wider text-[10px] bg-amber-600/30 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40">Toolbox Standard</span>
+          <span class="text-slate-300">FastSigns builds strictly to approved 2023 A M King brand specs. Orders require manager sign-off prior to production.</span>
+        </div>
+        <div class="text-[11px] text-slate-400 font-mono">
+          Custom Artwork Directives: <a href="mailto:sarahs@amkinggroup.com" class="text-amber-300 underline font-semibold">sarahs@amkinggroup.com</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY LAYOUT -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- LEFT COLUMN: BUILDER, PACKAGES & PRODUCTS (7 Cols) -->
+    <section class="lg:col-span-7 xl:col-span-8 space-y-8">
+
+      <!-- 1. MANDATORY METADATA & APPROVAL ROUTING CARD -->
+      <div id="projectMetaBox" class="bg-amk-900 border border-amk-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amk-orange via-amber-500 to-fs-red"></div>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm font-black uppercase tracking-wider text-white flex items-center space-x-2">
+              <span class="w-5 h-5 rounded-full bg-amk-orange text-white text-[11px] flex items-center justify-center font-bold">1</span>
+              <span>Project Jobsite &amp; Approval Routing</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Enter site delivery specifics and designated manager for sign-off release.</p>
+          </div>
+          <span class="text-[10px] uppercase font-mono text-amber-400/90 bg-amber-950/60 border border-amber-800/40 px-2.5 py-1 rounded-full font-semibold">Step 1 Required</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Project Name *</label>
+            <input type="text" id="metaProjectName" oninput="saveMeta()" placeholder="e.g. Statesville DC Expansion" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amk-orange transition" value="Statesville DC Expansion">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Job # / PO / Cost Code *</label>
+            <input type="text" id="metaPONumber" oninput="saveMeta()" placeholder="e.g. 23-8841-SIGN" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amk-orange transition" value="23-8841-SIGN">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-300 mb-1">Jobsite Street Address &amp; Delivery Instructions *</label>
+            <input type="text" id="metaAddress" oninput="saveMeta()" placeholder="Street, City, State, Zip & Gate/Trailer delivery instructions" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amk-orange transition" value="120 Salisbury Rd, Statesville, NC 28677 (Deliver to Field Trailer Office)">
+          </div>
+
+          <!-- Requester Credentials -->
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Requester / Superintendent Name *</label>
+            <input type="text" id="metaRequesterName" oninput="saveMeta()" placeholder="e.g. Mike Johnson" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amk-orange transition" value="Mike Johnson (Superintendent)">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Requester Mobile Phone</label>
+            <input type="tel" id="metaRequesterPhone" oninput="saveMeta()" placeholder="e.g. (704) 555-0192" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amk-orange transition" value="(704) 555-0192">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Requester Email * (for CC audit copy)</label>
+            <input type="email" id="metaRequesterEmail" oninput="saveMeta()" placeholder="e.g. mike.j@amkinggroup.com" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amk-orange transition" value="mike.j@amkinggroup.com">
+          </div>
+
+          <!-- Boss / Manager Approval Target -->
+          <div class="bg-amk-850 p-3 rounded-xl border border-amber-900/60 sm:col-span-1 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-1">
+              <label class="block font-bold text-amber-300 uppercase tracking-wider text-[11px]">
+                Approving Boss / Manager *
+              </label>
+              <button type="button" onclick="setDefaultApprover()" class="text-[10px] text-slate-400 hover:text-white underline">Reset to Default</button>
+            </div>
+            <input type="email" id="metaApproverEmail" oninput="saveMeta()" placeholder="sarahs@amkinggroup.com" class="w-full bg-amk-950 border border-amber-600/60 rounded-lg px-3 py-1.5 text-white font-mono text-xs focus:outline-none focus:border-amber-400" value="sarahs@amkinggroup.com">
+            <span class="text-[10px] text-slate-400 mt-1 block">Receives requisition first with 1-click FastSigns authorization.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. PRE-BUILT SIGNAGE PACKAGES (QUICK START BUNDLES) -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-black uppercase tracking-wider text-white flex items-center space-x-2">
+              <span class="w-5 h-5 rounded-full bg-amk-orange text-white text-[11px] flex items-center justify-center font-bold">2</span>
+              <span>Fast-Track Pre-Built Bundles</span>
+            </h2>
+            <p class="text-xs text-slate-400">Add an entire standardized package to your requisition in one click.</p>
+          </div>
+          <span class="text-xs text-slate-500 font-mono">3 Turnkey Bundles</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Bundle 1 -->
+          <div class="bg-amk-900 border border-amk-800 hover:border-amk-orange/70 rounded-xl p-4 flex flex-col justify-between transition group shadow-md">
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amk-orange/20 text-amk-orange border border-amk-orange/30">Most Popular</span>
+                <span class="font-mono font-bold text-amber-400 text-sm">$841</span>
+              </div>
+              <h3 class="font-bold text-white text-sm group-hover:text-amk-orange transition">Complete Jobsite Starter Kit</h3>
+              <p class="text-[11px] text-slate-400 mt-1">Everything needed to launch a compliant A M King project perimeter.</p>
+              <ul class="text-[10px] text-slate-300 mt-3 space-y-1.5 font-mono">
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) 4'x8' Project Sign (6mm Sign Bond)</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(2) 3'x2' Directionals (Traffic &amp; Office)</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) 2'x4' Safety Rules Board (3mm)</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>Pre-drilled mounting holes included</span>
+                </li>
+              </ul>
+            </div>
+            <button onclick="addBundleToCart('starter')" class="mt-4 w-full bg-amk-800 hover:bg-amk-orange hover:text-white text-slate-200 text-xs font-bold py-2 rounded-lg transition border border-amk-700 flex items-center justify-center space-x-1.5 shadow">
+              <span>+ Add Starter Bundle</span>
+            </button>
+          </div>
+
+          <!-- Bundle 2 -->
+          <div class="bg-amk-900 border border-amk-800 hover:border-amk-orange/70 rounded-xl p-4 flex flex-col justify-between transition group shadow-md">
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Directional</span>
+                <span class="font-mono font-bold text-amber-400 text-sm">$464</span>
+              </div>
+              <h3 class="font-bold text-white text-sm group-hover:text-amk-orange transition">Standard Site Wayfinding (Set of 4)</h3>
+              <p class="text-[11px] text-slate-400 mt-1">Full ingress/egress directional coverage for traffic and visitor flow.</p>
+              <ul class="text-[10px] text-slate-300 mt-3 space-y-1.5 font-mono">
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) Preset A: Construction Traffic &rarr;</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) Preset K: Field Office &rarr;</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) Preset D: AM King Parking Only</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) Preset M: Speed Limit 5 MPH</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-slate-400">All 3'x2' 3mm Sign Bond w/ Holes</span>
+                </li>
+              </ul>
+            </div>
+            <button onclick="addBundleToCart('directional')" class="mt-4 w-full bg-amk-800 hover:bg-amk-orange hover:text-white text-slate-200 text-xs font-bold py-2 rounded-lg transition border border-amk-700 flex items-center justify-center space-x-1.5 shadow">
+              <span>+ Add Wayfinding Pack</span>
+            </button>
+          </div>
+
+          <!-- Bundle 3 -->
+          <div class="bg-amk-900 border border-amk-800 hover:border-amk-orange/70 rounded-xl p-4 flex flex-col justify-between transition group shadow-md">
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">Compliance</span>
+                <span class="font-mono font-bold text-amber-400 text-sm">$638</span>
+              </div>
+              <h3 class="font-bold text-white text-sm group-hover:text-amk-orange transition">Safety &amp; Compliance Master Pack</h3>
+              <p class="text-[11px] text-slate-400 mt-1">OSHA mandates &amp; comprehensive rules for safety audit readiness.</p>
+              <ul class="text-[10px] text-slate-300 mt-3 space-y-1.5 font-mono">
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) 4'x8' 14-Point Jobsite Rules Board</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) Caution: Authorized Personnel (36"x24")</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-emerald-400 font-bold">&check;</span>
+                  <span>(1) AED Inside Unit Sign</span>
+                </li>
+                <li class="flex items-center space-x-1.5">
+                  <span class="text-slate-400">All heavy-duty 6mm Sign Bond</span>
+                </li>
+              </ul>
+            </div>
+            <button onclick="addBundleToCart('safety')" class="mt-4 w-full bg-amk-800 hover:bg-amk-orange hover:text-white text-slate-200 text-xs font-bold py-2 rounded-lg transition border border-amk-700 flex items-center justify-center space-x-1.5 shadow">
+              <span>+ Add Safety Bundle</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. INDIVIDUAL CONFIGURABLE CATALOG -->
+      <div class="bg-amk-900 border border-amk-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-black uppercase tracking-wider text-white flex items-center space-x-2">
+              <span class="w-5 h-5 rounded-full bg-amk-orange text-white text-[11px] flex items-center justify-center font-bold">3</span>
+              <span>Catalog Configurator (By Sign Type)</span>
+            </h2>
+            <p class="text-xs text-slate-400">Select specifications, substrates, and approved mounting add-ons.</p>
+          </div>
+          <span class="text-xs text-amber-400 font-mono font-bold bg-amk-950 px-3 py-1 rounded-full border border-amk-800">
+            Unit Price: <span id="displayUnitPrice" class="text-white font-extrabold">$338</span>
+          </span>
+        </div>
+
+        <!-- CATEGORY NAVIGATION TABS -->
+        <div class="bg-amk-950 p-1.5 rounded-xl border border-amk-800 flex flex-wrap gap-1">
+          <button onclick="selectCategory('jobsite')" id="tab-jobsite" class="cat-pill flex-1 min-w-[130px] px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition bg-amk-orange text-white shadow">
+            1. Jobsite Project
+          </button>
+          <button onclick="selectCategory('directionals')" id="tab-directionals" class="cat-pill flex-1 min-w-[130px] px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition text-slate-400 hover:text-white hover:bg-amk-850">
+            2. Directionals A–M
+          </button>
+          <button onclick="selectCategory('custom-dir')" id="tab-custom-dir" class="cat-pill flex-1 min-w-[130px] px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition text-slate-400 hover:text-white hover:bg-amk-850">
+            3. Custom &amp; Dev
+          </button>
+          <button onclick="selectCategory('tarps')" id="tab-tarps" class="cat-pill flex-1 min-w-[130px] px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition text-slate-400 hover:text-white hover:bg-amk-850">
+            4. Tarps (10'x12')
+          </button>
+          <button onclick="selectCategory('safety')" id="tab-safety" class="cat-pill flex-1 min-w-[130px] px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition text-slate-400 hover:text-white hover:bg-amk-850">
+            5. Safety &amp; Rules
+          </button>
+        </div>
+
+        <!-- SECTION SUB-HEADER -->
+        <div class="border-b border-amk-800 pb-3 flex justify-between items-end">
+          <div>
+            <h3 id="catTitle" class="text-base font-bold text-white font-sign tracking-wide">4'x8' and 2'x4' Horizontal Jobsite Signs</h3>
+            <p id="catSubtitle" class="text-xs text-slate-400">Standardized exterior project branding with high-durability sign bond or vinyl.</p>
+          </div>
+          <span id="catPageRef" class="text-[10px] font-mono text-slate-500 bg-amk-850 px-2 py-0.5 rounded border border-amk-800">Guide Page 58</span>
+        </div>
+
+        <!-- DYNAMIC FIELDS CONTAINER -->
+        <div id="dynamicFields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <!-- ADD-ONS -->
+        <div class="border-t border-amk-800 pt-4">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
+            Hardware, Hole Drilling &amp; Staging Add-Ons
+          </label>
+          <div id="dynamicAddOns" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- QUANTITY & ADD TO MANIFEST -->
+        <div class="border-t border-amk-800 pt-5 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Quantity:</span>
+            <div class="flex items-center border border-amk-700 rounded-lg bg-amk-950 overflow-hidden">
+              <button onclick="changeQty(-1)" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-amk-800 transition font-bold text-sm">-</button>
+              <input type="number" id="productQty" value="1" min="1" max="99" class="w-12 bg-transparent text-center text-sm font-black text-white focus:outline-none" readonly>
+              <button onclick="changeQty(1)" class="px-3 py-2 text-slate-300 hover:text-white hover:bg-amk-800 transition font-bold text-sm">+</button>
+            </div>
+          </div>
+
+          <button onclick="addConfiguredItemToCart()" class="bg-fs-red hover:bg-fs-darkred text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-lg shadow-fs-red/30 flex items-center space-x-2 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Add Configured Item to Order</span>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: LIVE VISUAL PREVIEW & STICKY CART (5 Cols) -->
+    <aside class="lg:col-span-5 xl:col-span-4 space-y-6">
+
+      <!-- LIVE SIGN RENDER PREVIEW -->
+      <div class="bg-amk-900 border border-amk-800 rounded-2xl p-5 shadow-xl">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center space-x-1.5">
+            <svg class="w-4 h-4 text-amk-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <span>Live Sign Preview</span>
+          </h3>
+          <span id="previewTag" class="text-[10px] font-mono text-amber-400 bg-amber-950/70 border border-amber-800/40 px-2 py-0.5 rounded">4'x8' Horiz</span>
+        </div>
+
+        <!-- STAGE CANVAS -->
+        <div class="bg-amk-950 border border-amk-800 rounded-xl p-4 flex items-center justify-center min-h-[260px] overflow-hidden relative">
+          <div id="visualCanvas" class="sign-shadow transition-all duration-300 w-full rounded flex flex-col justify-between p-4 relative text-center">
+            <!-- Dynamic Preview Content -->
+          </div>
+        </div>
+
+        <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+          <span>Typeface: Franklin Gothic</span>
+          <span>FastSigns QC Standard</span>
+        </div>
+      </div>
+
+      <!-- STICKY ORDER MANIFEST SUMMARY -->
+      <div class="bg-amk-900 border border-amk-800 rounded-2xl p-5 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-amk-800 pb-3">
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-wider text-white">Requisition Manifest</h3>
+            <p class="text-[11px] text-slate-400" id="cartProjectIndicator">Project: Statesville DC Expansion</p>
+          </div>
+          <span id="sideCartCount" class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/30">0 Items</span>
+        </div>
+
+        <!-- Item list -->
+        <div id="sideCartItems" class="space-y-3 max-h-56 overflow-y-auto custom-scroll pr-1 text-xs">
+          <p class="text-slate-500 italic py-6 text-center">Your requisition is currently empty. Choose a pre-built bundle or configure items above.</p>
+        </div>
+
+        <!-- Subtotals -->
+        <div class="border-t border-amk-800 pt-3 space-y-1.5 text-xs">
+          <div class="flex justify-between text-slate-400">
+            <span>Material &amp; Sign Total:</span>
+            <span id="sideSubtotal" class="font-mono font-bold text-white">$0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Packaging &amp; Handling:</span>
+            <span class="text-emerald-400 font-medium">Included</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Target Production SLA:</span>
+            <span class="font-mono text-slate-300">3-5 Business Days</span>
+          </div>
+          <div class="flex justify-between text-sm font-black border-t border-amk-800/80 pt-2 text-white">
+            <span>Total Job Cost:</span>
+            <span id="sideTotal" class="text-amber-400 font-mono text-lg">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Action Submit Button -->
+        <button onclick="toggleCartDrawer()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-700/20 flex items-center justify-center space-x-2">
+          <span>Review &amp; Submit For Approval &rarr;</span>
+        </button>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- CART & APPROVAL SLIDE-OVER DRAWER -->
+  <div id="drawerOverlay" class="fixed inset-0 bg-black/80 z-50 backdrop-blur-sm hidden transition-opacity" onclick="toggleCartDrawer()"></div>
+  <div id="cartDrawer" class="fixed inset-y-0 right-0 max-w-full w-full sm:max-w-xl bg-amk-900 border-l border-amk-800 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    
+    <!-- Drawer Head -->
+    <div class="px-6 py-5 border-b border-amk-800 flex items-center justify-between bg-amk-950">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white text-amk-950 font-sign font-extrabold text-xl px-2 py-0.5 rounded">
+          A&bull;M&bull;K
+        </div>
+        <div>
+          <h3 class="text-sm font-black uppercase tracking-wider text-white">Order Requisition Review</h3>
+          <p class="text-xs text-slate-400 font-mono" id="drawerProjectLabel">Statesville DC Expansion (PO: 23-8841-SIGN)</p>
+        </div>
+      </div>
+      <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-white p-1.5 rounded-lg bg-amk-850 hover:bg-amk-800 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Drawer Body Manifest -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-4 custom-scroll" id="drawerItemList">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Drawer Submission Footer -->
+    <div class="p-6 border-t border-amk-800 bg-amk-950 space-y-4">
+      
+      <!-- Approval Notice Box -->
+      <div class="bg-amber-950/40 border border-amber-800/50 rounded-xl p-3.5 text-xs text-amber-200">
+        <div class="flex items-center space-x-2 font-bold mb-1">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          <span class="uppercase tracking-wider">Internal Approval Protocol</span>
+        </div>
+        <p class="text-slate-300 leading-relaxed">
+          Submitting this order will draft a pre-authorized release directly to your boss (<span id="drawerApproverTag" class="text-amber-300 font-mono font-bold">sarahs@amkinggroup.com</span>) with an embedded 1-click link to authorize FastSigns fabrication.
+        </p>
+      </div>
+
+      <div class="flex justify-between items-center text-sm font-bold border-b border-amk-800 pb-3">
+        <span class="text-slate-300 uppercase tracking-wider text-xs">Total Requisition:</span>
+        <span id="drawerTotal" class="text-2xl text-amber-400 font-mono font-black">$0.00</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <button onclick="processApprovalSubmission()" class="w-full bg-fs-red hover:bg-fs-darkred text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider transition shadow-xl shadow-fs-red/30 flex items-center justify-center space-x-2.5 active:scale-95">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <span>Submit Order For Manager Approval</span>
+      </button>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="copyErpManifest()" class="bg-amk-850 hover:bg-amk-800 text-slate-300 hover:text-white py-2 rounded-lg text-xs font-semibold transition border border-amk-700 flex items-center justify-center space-x-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+          <span>Copy for Procore</span>
+        </button>
+        <button onclick="window.print()" class="bg-amk-850 hover:bg-amk-800 text-slate-300 hover:text-white py-2 rounded-lg text-xs font-semibold transition border border-amk-700 flex items-center justify-center space-x-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span>Print Manifest</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- APPROVAL CONFIRMATION & AUDIT MODAL -->
+  <div id="approvalModal" class="fixed inset-0 bg-black/90 z-50 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-amk-900 border border-amk-700 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-5">
+      
+      <div class="flex items-start justify-between border-b border-amk-800 pb-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-lg">
+            &check;
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white">Order Requisition Compiled</h3>
+            <p class="text-xs text-slate-400">Ready for transmission to approving manager &amp; FastSigns.</p>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-amk-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="bg-amk-950 border border-amk-800 rounded-xl p-4 text-xs space-y-2">
+        <div class="flex justify-between text-slate-400">
+          <span>Routing Target (Boss):</span>
+          <span id="modalTargetApprover" class="text-amber-300 font-mono font-bold">sarahs@amkinggroup.com</span>
+        </div>
+        <div class="flex justify-between text-slate-400">
+          <span>Audit Copy (CC):</span>
+          <span id="modalTargetRequester" class="text-white font-mono">mike.j@amkinggroup.com</span>
+        </div>
+        <div class="flex justify-between text-slate-400">
+          <span>Final Fabricator:</span>
+          <span class="text-fs-accent font-mono font-bold">hannah.ewing@fastsigns.com</span>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+          Email Payload Preview (Sent to Boss with 1-Click FastSigns Trigger)
+        </label>
+        <div id="modalPayloadText" class="bg-amk-950 border border-amk-800 rounded-xl p-4 font-mono text-[11px] text-slate-300 max-h-56 overflow-y-auto custom-scroll whitespace-pre-wrap select-all">
+          <!-- Raw message body -->
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button onclick="dispatchManagerEmail()" class="flex-1 bg-fs-red hover:bg-fs-darkred text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-fs-red/30 flex items-center justify-center space-x-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+          <span>Launch Email in Outlook / Client</span>
+        </button>
+        <button onclick="copyModalContent()" class="bg-amk-800 hover:bg-amk-700 text-white px-5 py-3 rounded-xl text-xs font-bold transition border border-amk-600 flex items-center justify-center space-x-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <span>Copy Full Email Text</span>
+        </button>
+        <button onclick="closeModal()" class="bg-transparent hover:bg-amk-850 text-slate-400 hover:text-white px-4 py-3 rounded-xl text-xs transition">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRINT-FRIENDLY HIDDEN INVOICE VIEW -->
+  <div id="printArea" class="hidden">
+    <div style="padding: 24px; font-family: Arial, sans-serif;">
+      <h1 style="font-size: 22px; font-weight: bold; margin-bottom: 4px;">A M KING SIGNAGE REQUISITION</h1>
+      <h3 style="font-size: 14px; color: #555; margin-bottom: 16px;">FASTSIGNS of Charlotte Partner Manifest</h3>
+      <hr style="border: 1px solid #ccc; margin-bottom: 16px;">
+      <div id="printDetails"></div>
+      <div style="margin-top: 24px;" id="printItems"></div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION CORE -->
+  <script>
+    // --- 1. CATALOG SPECIFICATIONS & PRICING (2023 A M KING STANDARDS) ---
+    const FASTSIGNS_EMAIL = "hannah.ewing@fastsigns.com";
+    const DEFAULT_APPROVER = "sarahs@amkinggroup.com";
+
+    const CATALOG_DATA = {
+      // Jobsite & Project Signs (Pages 58 & 59)
+      jobsite: {
+        title: "Horizontal & Vertical Jobsite Project Signs",
+        subtitle: "3mm/6mm Recyclable Sign Bond or 14 oz. Reinforced Banner",
+        pageRef: "Guide Pages 58–59",
+        sizes: [
+          { id: "4x8", label: "4' x 8' Main Project Sign" },
+          { id: "2x4", label: "2' x 4' Intermediate Jobsite Sign" }
+        ],
+        orientations: ["Horizontal", "Vertical"],
+        backgrounds: ["White Background", "Black Background"],
+        substrates: [
+          { id: "3mm", label: "3mm Sign Bond (Recyclable / Interior & Standard Exterior)" },
+          { id: "6mm", label: "6mm Sign Bond (Heavy-Duty Construction Site)" },
+          { id: "banner", label: "14 oz. Nylon Reinforced Vinyl Banner (Grommeted)" }
+        ],
+        priceMatrix: {
+          "2x4": { "3mm": 160, "6mm": 200, "banner": 99 },
+          "4x8-horiz-white": { "3mm": 338, "6mm": 509, "banner": 226 },
+          "4x8-horiz-black": { "3mm": 504, "6mm": 662, "banner": 255 },
+          "4x8-vert-white": { "3mm": 445, "6mm": 485, "banner": 384 },
+          "4x8-vert-black": { "3mm": 446, "6mm": 555, "banner": 225 }
+        },
+        addOns: [
+          { id: "holes", label: "Pre-drilled Holes (+$10)", price: 10 },
+          { id: "grommets", label: "Grommets (+$10)", price: 10 },
+          { id: "kit", label: "Install Kit (+$25)", price: 25 }
+        ]
+      },
+
+      // Directional Signs A through M (Page 60)
+      directionals: {
+        title: "Standard Site Directional Signs (Presets A through M)",
+        subtitle: "Black Background with Franklin Gothic Medium Capital Typography",
+        pageRef: "Guide Page 60",
+        presets: [
+          { id: "A", name: "Preset A", text: "CONSTRUCTION TRAFFIC", sub: "Visitors Must Report to the Field Office", arrow: "right" },
+          { id: "B", name: "Preset B", text: "CONSTRUCTION TRAFFIC", sub: "Visitors Must Report to the Field Office", arrow: "left" },
+          { id: "C", name: "Preset C", text: "CONSTRUCTION ENTRANCE", sub: "Visitors Must Report to the Field Office", arrow: "up" },
+          { id: "D", name: "Preset D", text: "PARKING FOR A M KING ONLY", sub: "Unauthorized Vehicles Towed", arrow: "none" },
+          { id: "E", name: "Preset E", text: "PARKING FOR A M KING ONLY", sub: "Reserved", arrow: "right" },
+          { id: "F", name: "Preset F", text: "NO CONSTRUCTION TRAFFIC", sub: "", arrow: "none" },
+          { id: "G", name: "Preset G", text: "NO THROUGH TRAFFIC", sub: "", arrow: "none" },
+          { id: "H", name: "Preset H", text: "SUBCONTRACTOR PARKING", sub: "", arrow: "right" },
+          { id: "I", name: "Preset I", text: "MAIN ENTRANCE", sub: "", arrow: "up" },
+          { id: "J", name: "Preset J", text: "SUBCONTRACTOR PARKING", sub: "", arrow: "left" },
+          { id: "K", name: "Preset K", text: "FIELD OFFICE", sub: "All Visitors Check In", arrow: "right" },
+          { id: "L", name: "Preset L", text: "SUBCONTRACTOR PARKING", sub: "", arrow: "none" },
+          { id: "M", name: "Preset M", text: "SPEED LIMIT 5 MPH", sub: "Strictly Enforced On Site", arrow: "none" }
+        ],
+        sizes: [
+          { id: "3x2", label: "3' x 2' (36\" x 24\") Directional", prices: { "3mm": 106, "6mm": 139 } },
+          { id: "14x20", label: "14\" x 20\" Compact Site Marker", prices: { "3mm": 69, "6mm": 90 } }
+        ],
+        substrates: [
+          { id: "3mm", label: "3mm Sign Bond" },
+          { id: "6mm", label: "6mm Sign Bond" }
+        ],
+        addOns: [
+          { id: "holes", label: "Pre-drilled Holes (+$10)", price: 10 }
+        ]
+      },
+
+      // Custom Directional N & 4x8 Development Boards (Pages 61 & 62)
+      "custom-dir": {
+        title: "Custom Directional & Architectural Development Boards",
+        subtitle: "Custom text within A M King brand standards or multi-partner Coming Soon boards",
+        pageRef: "Guide Pages 61–62",
+        types: [
+          { id: "preset-n-2x4", label: "Preset N: Custom Directional (2' x 4')", prices: { "3mm": 150, "6mm": 200, "banner": 99 } },
+          { id: "preset-n-4x8", label: "Preset N: Custom Directional (4' x 8')", prices: { "3mm": 446, "6mm": 555, "banner": 225 } },
+          { id: "coming-soon-4x8", label: "4' x 8' Architectural Development 'Coming Soon' Board", prices: { "3mm": 276, "6mm": 385, "banner": 55 } }
+        ],
+        substrates: [
+          { id: "3mm", label: "3mm Sign Bond" },
+          { id: "6mm", label: "6mm Sign Bond" },
+          { id: "banner", label: "14 oz. Vinyl Banner" }
+        ],
+        addOns: [
+          { id: "holes", label: "Pre-drilled Holes (+$10)", price: 10 },
+          { id: "kit", label: "Install Kit (+$25)", price: 25 }
+        ]
+      },
+
+      // Heavy Duty Site Tarps (Page 63)
+      tarps: {
+        title: "10' x 12' Heavy-Duty Perimeter Fence Tarps",
+        subtitle: "18 oz. Banner Material, sewn webbing hem, nickel grommets every 24\" all sides",
+        pageRef: "Guide Page 63",
+        fixedPrice: 554,
+        logoOptions: [
+          { id: "with-logo", label: "With 59\" x 80\" White A M KING Logo" },
+          { id: "no-logo", label: "Solid 100% Black Heavy-Duty Vinyl (No Logo)" }
+        ],
+        addOns: []
+      },
+
+      // Safety & Rules (Pages 64–67)
+      safety: {
+        title: "Jobsite Safety, OSHA Compliance & Rules Boards",
+        subtitle: "Standardized OSHA headers, 14-Point Jobsite Rules, and Health Prevention",
+        pageRef: "Guide Pages 64–67",
+        models: [
+          { id: "rules-board", label: "Jobsite Safety Rules Board (14-Point Mandates)" },
+          { id: "osha-standard", label: "OSHA Standard Hazard Header (Presets A–G)" },
+          { id: "custom-safety", label: "Preset I: Custom Safety Notice" },
+          { id: "covid-board", label: "Jobsite Virus & Infectious Disease Prevention" }
+        ],
+        oshaPresets: [
+          { id: "A", header: "CAUTION", text: "AUTHORIZED PERSONNEL ONLY", color: "bg-amber-400 text-black border-amber-500" },
+          { id: "B", header: "DANGER", text: "NO SMOKING", color: "bg-red-600 text-white border-red-700" },
+          { id: "C", header: "NOTICE", text: "THIS GATE MUST BE KEPT LOCKED", color: "bg-blue-600 text-white border-blue-700" },
+          { id: "D", header: "SAFETY FIRST", text: "FIRST AID KIT INSIDE", color: "bg-emerald-600 text-white border-emerald-700" },
+          { id: "E", header: "WARNING", text: "CONSTRUCTION AREA", color: "bg-orange-600 text-white border-orange-700" },
+          { id: "F", header: "THINK", text: "SAFETY FIRST ALWAYS", color: "bg-emerald-700 text-white border-emerald-800" },
+          { id: "G", header: "AED", text: "AUTOMATED EXTERNAL DEFIBRILLATOR INSIDE", color: "bg-red-700 text-white border-red-800" }
+        ],
+        addOns: [
+          { id: "holes", label: "Pre-drilled Holes (+$10)", price: 10 },
+          { id: "grommets", label: "Grommets (+$10)", price: 10 },
+          { id: "kit", label: "Install Kit (+$25)", price: 25 }
+        ]
+      }
+    };
+
+    // --- 2. CONFIGURATOR STATE ---
+    let activeCategory = "jobsite";
+    let configState = {
+      size: "4x8",
+      orientation: "Horizontal",
+      background: "White Background",
+      substrate: "6mm",
+      directionalPreset: "A",
+      directionalSize: "3x2",
+      customType: "preset-n-2x4",
+      customText: "DELIVERY TRAFFIC ONLY - REPORT TO NORTH GATE TRAILER",
+      comingSoonClient: "Carolinas Center for Ambulatory Dentistry",
+      comingSoonPartners: "THE KEITH CORPORATION &bull; MANSOUR EDTIN CONSULTING",
+      tarpLogo: "with-logo",
+      safetyModel: "rules-board",
+      safetySize: "4x8",
+      safetyLanguage: "English",
+      safetyOshaPreset: "A",
+      safetyCustomMsg: "HARD HATS, EYE PROTECTION & STEEL TOES REQUIRED PAST THIS POINT",
+      selectedAddOns: { "holes": 10 }
+    };
+
+    let cartManifest = [];
+    let activeMailtoUrl = "";
+    let clipboardFormattedText = "";
+
+    // --- 3. INITIALIZATION ---
+    window.addEventListener("DOMContentLoaded", () => {
+      loadSavedMeta();
+      renderDynamicConfigurator();
+      recalcPriceAndMockup();
+      updateCartDisplay();
+    });
+
+    function scrollToProjectMeta() {
+      document.getElementById("projectMetaBox").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setDefaultApprover() {
+      document.getElementById("metaApproverEmail").value = DEFAULT_APPROVER;
+      saveMeta();
+    }
+
+    function saveMeta() {
+      const proj = document.getElementById("metaProjectName").value.trim();
+      const po = document.getElementById("metaPONumber").value.trim();
+      const addr = document.getElementById("metaAddress").value.trim();
+      const reqName = document.getElementById("metaRequesterName").value.trim();
+      const reqPhone = document.getElementById("metaRequesterPhone").value.trim();
+      const reqEmail = document.getElementById("metaRequesterEmail").value.trim();
+      const appEmail = document.getElementById("metaApproverEmail").value.trim();
+
+      const meta = { proj, po, addr, reqName, reqPhone, reqEmail, appEmail };
+      localStorage.setItem("amk_portal_meta", JSON.stringify(meta));
+
+      document.getElementById("headerProjectBadge").innerText = `Project: ${proj || 'Not Set'}`;
+      document.getElementById("cartProjectIndicator").innerText = `Project: ${proj || 'Pending'}`;
+      document.getElementById("drawerProjectLabel").innerText = `${proj || 'Project'} (PO: ${po || 'Pending'})`;
+      document.getElementById("drawerApproverTag").innerText = appEmail || DEFAULT_APPROVER;
+    }
+
+    function loadSavedMeta() {
+      const saved = localStorage.getItem("amk_portal_meta");
+      if (saved) {
+        try {
+          const m = JSON.parse(saved);
+          if (m.proj) document.getElementById("metaProjectName").value = m.proj;
+          if (m.po) document.getElementById("metaPONumber").value = m.po;
+          if (m.addr) document.getElementById("metaAddress").value = m.addr;
+          if (m.reqName) document.getElementById("metaRequesterName").value = m.reqName;
+          if (m.reqPhone) document.getElementById("metaRequesterPhone").value = m.reqPhone;
+          if (m.reqEmail) document.getElementById("metaRequesterEmail").value = m.reqEmail;
+          if (m.appEmail) document.getElementById("metaApproverEmail").value = m.appEmail;
+          saveMeta();
+        } catch(e) {}
+      }
+    }
+
+    // --- 4. CATEGORY & TAB SWITCHING ---
+    function selectCategory(catId) {
+      activeCategory = catId;
+      configState.selectedAddOns = {}; // reset add-ons
+
+      // Tab Pills styling
+      document.querySelectorAll(".cat-pill").forEach(pill => {
+        pill.classList.remove("bg-amk-orange", "text-white", "shadow");
+        pill.classList.add("text-slate-400");
+      });
+      const activePill = document.getElementById(`tab-${catId}`);
+      if (activePill) {
+        activePill.classList.remove("text-slate-400");
+        activePill.classList.add("bg-amk-orange", "text-white", "shadow");
+      }
+
+      renderDynamicConfigurator();
+      recalcPriceAndMockup();
+    }
+
+    function renderDynamicConfigurator() {
+      const cat = CATALOG_DATA[activeCategory];
+      document.getElementById("catTitle").innerText = cat.title;
+      document.getElementById("catSubtitle").innerText = cat.subtitle;
+      document.getElementById("catPageRef").innerText = cat.pageRef;
+      const fields = document.getElementById("dynamicFields");
+      fields.innerHTML = "";
+
+      // 1. JOBSITE SIGNS (Pages 58 & 59)
+      if (activeCategory === "jobsite") {
+        fields.innerHTML = `
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Dimensions / Format</label>
+            <select onchange="updateConfigState('size', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.sizes.map(s => `<option value="${s.id}" ${configState.size === s.id ? 'selected' : ''}>${s.label}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Orientation</label>
+            <select onchange="updateConfigState('orientation', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.orientations.map(o => `<option value="${o}" ${configState.orientation === o ? 'selected' : ''}>${o}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Sign Background Colorway</label>
+            <select onchange="updateConfigState('background', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.backgrounds.map(b => `<option value="${b}" ${configState.background === b ? 'selected' : ''}>${b}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Substrate Material</label>
+            <select onchange="updateConfigState('substrate', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.substrates.map(sub => `<option value="${sub.id}" ${configState.substrate === sub.id ? 'selected' : ''}>${sub.label}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }
+
+      // 2. DIRECTIONALS A–M (Page 60)
+      else if (activeCategory === "directionals") {
+        fields.innerHTML = `
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-300 mb-2">Select Standard Graphic Preset (A through M)</label>
+            <div class="grid grid-cols-4 sm:grid-cols-7 gap-1.5 max-h-36 overflow-y-auto custom-scroll p-1 bg-amk-950 rounded-xl border border-amk-800">
+              ${cat.presets.map(p => `
+                <button type="button" onclick="updateConfigState('directionalPreset', '${p.id}')" class="p-2 text-center rounded-lg border text-xs font-bold transition flex flex-col items-center justify-center ${configState.directionalPreset === p.id ? 'bg-amk-orange border-amk-orange text-white shadow-md' : 'bg-amk-900 border-amk-800 text-slate-300 hover:border-amk-700'}">
+                  <span>Preset ${p.id}</span>
+                  <span class="text-[9px] font-normal opacity-80 mt-0.5">${p.arrow === 'right' ? '&rarr;' : (p.arrow === 'left' ? '&larr;' : (p.arrow === 'up' ? '&uarr;' : '&bull;'))}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Sign Dimensions</label>
+            <select onchange="updateConfigState('directionalSize', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.sizes.map(s => `<option value="${s.id}" ${configState.directionalSize === s.id ? 'selected' : ''}>${s.label}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Material Substrate</label>
+            <select onchange="updateConfigState('substrate', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.substrates.map(sub => `<option value="${sub.id}" ${configState.substrate === sub.id ? 'selected' : ''}>${sub.label}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }
+
+      // 3. CUSTOM DIRECTIONALS & DEVELOPMENT (Pages 61 & 62)
+      else if (activeCategory === "custom-dir") {
+        fields.innerHTML = `
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-300 mb-1">Product Template</label>
+            <select onchange="updateConfigState('customType', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.types.map(t => `<option value="${t.id}" ${configState.customType === t.id ? 'selected' : ''}>${t.label}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Substrate</label>
+            <select onchange="updateConfigState('substrate', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.substrates.map(sub => `<option value="${sub.id}" ${configState.substrate === sub.id ? 'selected' : ''}>${sub.label}</option>`).join('')}
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            ${configState.customType === 'coming-soon-4x8' ? `
+              <div>
+                <label class="block font-semibold text-slate-300 mb-1">Development / Facility Name</label>
+                <input type="text" oninput="updateConfigState('comingSoonClient', this.value)" value="${configState.comingSoonClient}" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white text-xs mb-2 focus:outline-none">
+                <label class="block font-semibold text-slate-300 mb-1">Partner / Developer Co-Branding</label>
+                <input type="text" oninput="updateConfigState('comingSoonPartners', this.value)" value="${configState.comingSoonPartners}" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none">
+              </div>
+            ` : `
+              <div>
+                <label class="block font-semibold text-slate-300 mb-1">Custom Directional Copy (Franklin Gothic Medium, All Caps)</label>
+                <textarea oninput="updateConfigState('customText', this.value)" rows="2" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white uppercase font-sign text-xs focus:outline-none focus:border-amk-orange">${configState.customText}</textarea>
+              </div>
+            `}
+          </div>
+        `;
+      }
+
+      // 4. HEAVY DUTY TARPS (Page 63)
+      else if (activeCategory === "tarps") {
+        fields.innerHTML = `
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-300 mb-1">Branding Selection</label>
+            <select onchange="updateConfigState('tarpLogo', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.logoOptions.map(l => `<option value="${l.id}" ${configState.tarpLogo === l.id ? 'selected' : ''}>${l.label}</option>`).join('')}
+            </select>
+          </div>
+          <div class="sm:col-span-2 bg-amk-950 p-3 rounded-xl border border-amk-800 text-slate-300 leading-relaxed text-[11px]">
+            <strong class="text-white block mb-1">A M King Perimeter Fence Specifications:</strong>
+            10' x 12' dimension, 18 oz. heavy-duty vinyl banner material with 100% black UV graphics. Webbing sewn into reinforced hems with nickel grommets positioned every 24" around the entire perimeter. Flat unit price: <strong>$554.00</strong>.
+          </div>
+        `;
+      }
+
+      // 5. SAFETY & RULES (Pages 64–67)
+      else if (activeCategory === "safety") {
+        fields.innerHTML = `
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-300 mb-1">Safety Sign Class</label>
+            <select onchange="updateConfigState('safetyModel', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              ${cat.models.map(m => `<option value="${m.id}" ${configState.safetyModel === m.id ? 'selected' : ''}>${m.label}</option>`).join('')}
+            </select>
+          </div>
+
+          ${configState.safetyModel === 'osha-standard' ? `
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-slate-300 mb-1">Standard OSHA Header Graphic</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                ${cat.oshaPresets.map(o => `
+                  <button type="button" onclick="updateConfigState('safetyOshaPreset', '${o.id}')" class="p-2 rounded-lg border text-xs font-bold transition flex flex-col items-center text-center ${configState.safetyOshaPreset === o.id ? 'bg-amk-orange border-amk-orange text-white' : 'bg-amk-950 border-amk-800 text-slate-300'}">
+                    <span>${o.header}</span>
+                    <span class="text-[9px] font-normal opacity-70">${o.text.substring(0, 14)}...</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          ${configState.safetyModel === 'custom-safety' ? `
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-slate-300 mb-1">Custom Safety Message (Preset I)</label>
+              <textarea oninput="updateConfigState('safetyCustomMsg', this.value)" rows="2" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white uppercase font-sign text-xs focus:outline-none">${configState.safetyCustomMsg}</textarea>
+            </div>
+          ` : ''}
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Size Option</label>
+            <select onchange="updateConfigState('safetySize', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              <option value="4x8" ${configState.safetySize === '4x8' ? 'selected' : ''}>4' x 8' Site Board</option>
+              <option value="2x4" ${configState.safetySize === '2x4' ? 'selected' : ''}>2' x 4' Intermediate</option>
+              <option value="36x24" ${configState.safetySize === '36x24' ? 'selected' : ''}>36" x 24" OSHA Standard</option>
+              <option value="20x14" ${configState.safetySize === '20x14' ? 'selected' : ''}>20" x 14" Gate Marker</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Language</label>
+            <select onchange="updateConfigState('safetyLanguage', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              <option value="English" ${configState.safetyLanguage === 'English' ? 'selected' : ''}>English Standard</option>
+              <option value="Spanish" ${configState.safetyLanguage === 'Spanish' ? 'selected' : ''}>Spanish (Reglas del Trabajo)</option>
+              <option value="Bilingual" ${configState.safetyLanguage === 'Bilingual' ? 'selected' : ''}>Bilingual Side-by-Side</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Material Substrate</label>
+            <select onchange="updateConfigState('substrate', this.value)" class="w-full bg-amk-950 border border-amk-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amk-orange">
+              <option value="6mm" ${configState.substrate === '6mm' ? 'selected' : ''}>6mm Sign Bond (Exterior Standard)</option>
+              <option value="3mm" ${configState.substrate === '3mm' ? 'selected' : ''}>3mm Sign Bond (Interior/Gate)</option>
+              <option value="10mm-coro" ${configState.substrate === '10mm-coro' ? 'selected' : ''}>10mm Coroplast (Interior Only)</option>
+              <option value="banner" ${configState.substrate === 'banner' ? 'selected' : ''}>14 oz. Vinyl Banner</option>
+            </select>
+          </div>
+        `;
+      }
+
+      renderDynamicAddOns();
+    }
+
+    function renderDynamicAddOns() {
+      const container = document.getElementById("dynamicAddOns");
+      const cat = CATALOG_DATA[activeCategory];
+      if (!cat.addOns || cat.addOns.length === 0) {
+        container.innerHTML = `<span class="text-xs text-slate-500 italic py-1">No add-ons applicable for this category.</span>`;
+        return;
+      }
+
+      container.innerHTML = cat.addOns.map(add => `
+        <label class="flex items-center space-x-2.5 p-2 rounded-lg border border-amk-800 bg-amk-950 hover:bg-amk-850 cursor-pointer text-xs transition">
+          <input type="checkbox" onchange="toggleAddOnOption('${add.id}', ${add.price})" ${configState.selectedAddOns[add.id] ? 'checked' : ''} class="rounded bg-amk-900 border-amk-700 text-fs-red focus:ring-0">
+          <span class="text-slate-200 font-medium">${add.label}</span>
+        </label>
+      `).join('');
+    }
+
+    function updateConfigState(key, val) {
+      configState[key] = val;
+      renderDynamicConfigurator();
+      recalcPriceAndMockup();
+    }
+
+    function toggleAddOnOption(id, price) {
+      if (configState.selectedAddOns[id]) {
+        delete configState.selectedAddOns[id];
+      } else {
+        configState.selectedAddOns[id] = price;
+      }
+      recalcPriceAndMockup();
+    }
+
+    function changeQty(delta) {
+      const el = document.getElementById("productQty");
+      let val = parseInt(el.value, 10) + delta;
+      if (val < 1) val = 1;
+      if (val > 99) val = 99;
+      el.value = val;
+    }
+
+    // --- 5. UNIT PRICE CALCULATOR ---
+    function computeUnitPrice() {
+      let base = 0;
+      const cat = CATALOG_DATA[activeCategory];
+
+      if (activeCategory === "jobsite") {
+        if (configState.size === "2x4") {
+          base = cat.priceMatrix["2x4"][configState.substrate] || 160;
+        } else {
+          const isVert = configState.orientation === "Vertical";
+          const isBlack = configState.background === "Black Background";
+          const key = `4x8-${isVert ? 'vert' : 'horiz'}-${isBlack ? 'black' : 'white'}`;
+          base = (cat.priceMatrix[key] && cat.priceMatrix[key][configState.substrate]) || 338;
+        }
+      } else if (activeCategory === "directionals") {
+        const sizeObj = cat.sizes.find(s => s.id === configState.directionalSize);
+        base = (sizeObj && sizeObj.prices[configState.substrate]) || 106;
+      } else if (activeCategory === "custom-dir") {
+        const typeObj = cat.types.find(t => t.id === configState.customType);
+        base = (typeObj && typeObj.prices[configState.substrate]) || 150;
+      } else if (activeCategory === "tarps") {
+        base = cat.fixedPrice;
+      } else if (activeCategory === "safety") {
+        if (configState.safetyModel === "rules-board" || configState.safetyModel === "covid-board") {
+          if (configState.safetySize === "2x4") {
+            base = configState.substrate === "6mm" ? 400 : (configState.substrate === "banner" ? 198 : 320);
+          } else {
+            base = configState.substrate === "6mm" ? 1110 : (configState.substrate === "banner" ? 450 : 892);
+          }
+        } else if (configState.safetyModel === "custom-safety") {
+          if (configState.safetySize === "2x4") {
+            base = configState.substrate === "6mm" ? 200 : (configState.substrate === "banner" ? 99 : 150);
+          } else {
+            base = configState.substrate === "6mm" ? 409 : (configState.substrate === "banner" ? 565 : 376);
+          }
+        } else {
+          // OSHA presets
+          base = configState.substrate === "10mm-coro" ? 125 : (configState.substrate === "6mm" ? 139 : 106);
+        }
+      }
+
+      // Add checked add-on prices
+      let addOnSum = 0;
+      for (const id in configState.selectedAddOns) {
+        addOnSum += configState.selectedAddOns[id];
+      }
+
+      return base + addOnSum;
+    }
+
+    // --- 6. LIVE MOCKUP PREVIEW ENGINE ---
+    function recalcPriceAndMockup() {
+      const unit = computeUnitPrice();
+      document.getElementById("displayUnitPrice").innerText = `$${unit}`;
+
+      const canvas = document.getElementById("visualCanvas");
+      const tag = document.getElementById("previewTag");
+
+      canvas.className = "sign-shadow transition-all duration-300 w-full rounded flex flex-col justify-between p-4 relative text-center";
+
+      if (activeCategory === "jobsite") {
+        const isBlack = configState.background === "Black Background";
+        tag.innerText = `${configState.size === '4x8' ? "4' x 8'" : "2' x 4'"} ${configState.orientation}`;
+        canvas.style.backgroundColor = isBlack ? "#12151B" : "#FFFFFF";
+        canvas.style.color = isBlack ? "#FFFFFF" : "#12151B";
+        canvas.style.border = isBlack ? "1px solid #2E3543" : "1px solid #CBD5E1";
+        canvas.style.minHeight = configState.orientation === "Vertical" ? "280px" : "180px";
+
+        canvas.innerHTML = `
+          <div class="flex items-center justify-between border-b ${isBlack ? 'border-amk-800' : 'border-slate-200'} pb-2">
+            <span class="font-sign font-black tracking-wider text-xl">A&bull;M&bull;KING</span>
+            <span class="text-[9px] uppercase font-mono tracking-widest ${isBlack ? 'text-slate-400' : 'text-slate-500'}">amkinggroup.com</span>
+          </div>
+          <div class="py-6 font-sign uppercase font-bold text-base tracking-wide">
+            DESIGN &bull; CONSTRUCTION &bull; FACILITY SERVICES
+          </div>
+          <div class="text-[9px] uppercase tracking-widest ${isBlack ? 'text-slate-400' : 'text-slate-500'} font-semibold">
+            ${configState.substrate.toUpperCase()} SIGN BOND &bull; FASTSIGNS PROOF
+          </div>
+        `;
+      }
+
+      else if (activeCategory === "directionals") {
+        tag.innerText = configState.directionalSize === '3x2' ? "3' x 2' Directional" : "14\" x 20\" Site Sign";
+        canvas.style.backgroundColor = "#0F1216";
+        canvas.style.color = "#FFFFFF";
+        canvas.style.border = "1px solid #2E3543";
+        canvas.style.minHeight = "200px";
+
+        const p = CATALOG_DATA.directionals.presets.find(i => i.id === configState.directionalPreset) || CATALOG_DATA.directionals.presets[0];
+        canvas.innerHTML = `
+          <div class="text-amk-orange font-bold text-xs uppercase tracking-widest text-left font-sign">Preset ${p.id}</div>
+          <div class="my-auto py-2">
+            <div class="font-sign font-extrabold text-lg sm:text-xl tracking-wider uppercase leading-tight text-white">${p.text}</div>
+            ${p.sub ? `<div class="font-sign text-xs text-slate-300 mt-1 uppercase">${p.sub}</div>` : ''}
+            ${p.arrow === 'right' ? '<div class="text-3xl text-amber-400 font-black mt-2">&rarr;</div>' : ''}
+            ${p.arrow === 'left' ? '<div class="text-3xl text-amber-400 font-black mt-2">&larr;</div>' : ''}
+            ${p.arrow === 'up' ? '<div class="text-3xl text-amber-400 font-black mt-2">&uarr;</div>' : ''}
+          </div>
+          <div class="border-t border-amk-800 pt-1 text-[10px] text-slate-400 font-sign font-bold">A&bull;M&bull;KING</div>
+        `;
+      }
+
+      else if (activeCategory === "custom-dir") {
+        tag.innerText = "Custom Development Sign";
+        canvas.style.backgroundColor = "#0F1216";
+        canvas.style.color = "#FFFFFF";
+        canvas.style.border = "1px solid #2E3543";
+        canvas.style.minHeight = "200px";
+
+        if (configState.customType === 'coming-soon-4x8') {
+          canvas.innerHTML = `
+            <div class="bg-sky-950/70 border border-sky-800/40 text-sky-200 text-[10px] font-bold uppercase tracking-widest py-1 px-2 rounded mb-2">
+              COMING SOON &bull; PROJECT SITE RENDERING
+            </div>
+            <div class="my-auto py-2">
+              <h4 class="font-sign font-bold text-base text-white uppercase">${configState.comingSoonClient || "FACILITY EXPANSION"}</h4>
+              <p class="text-[10px] text-slate-400 font-mono mt-1">${configState.comingSoonPartners || "DEVELOPMENT PARTNERS"}</p>
+            </div>
+            <div class="border-t border-amk-800 pt-1 flex justify-between items-center text-[9px] text-slate-400 font-sign">
+              <span>A&bull;M&bull;KING DESIGN-BUILD</span>
+              <span>FASTSIGNS 4'X8'</span>
+            </div>
+          `;
+        } else {
+          canvas.innerHTML = `
+            <div class="text-[10px] text-amber-400 uppercase tracking-widest font-mono text-left">Custom Directional (Preset N)</div>
+            <div class="my-auto py-3">
+              <div class="font-sign font-bold text-sm sm:text-base uppercase text-white tracking-wide leading-snug">
+                ${configState.customText || "CUSTOM MESSAGE GOES HERE"}
+              </div>
+            </div>
+            <div class="border-t border-amk-800 pt-2 flex justify-between items-center text-[9px] text-slate-400 font-sign">
+              <span>A&bull;M&bull;KING</span>
+              <span>amkinggroup.com</span>
+            </div>
+          `;
+        }
+      }
+
+      else if (activeCategory === "tarps") {
+        tag.innerText = "10' x 12' Heavy Tarp";
+        canvas.style.backgroundColor = "#000000";
+        canvas.style.color = "#FFFFFF";
+        canvas.style.border = "2px dashed #475368";
+        canvas.style.minHeight = "210px";
+
+        canvas.innerHTML = `
+          <div class="my-auto py-5">
+            ${configState.tarpLogo === 'with-logo' ? `
+              <div class="font-sign font-black text-2xl text-white tracking-widest border-2 border-white/80 inline-block px-5 py-2 uppercase">A&bull;M&bull;KING</div>
+              <div class="text-[10px] text-slate-400 font-mono mt-2">Center Logo Footprint: 59" x 80"</div>
+            ` : `
+              <div class="text-xs text-slate-500 uppercase font-mono tracking-widest">Plain Solid Black 18 oz. Vinyl</div>
+            `}
+          </div>
+          <div class="text-[9px] text-slate-500 font-mono">Sewn Webbing Hems &bull; 24" Nickel Perimeter Grommets</div>
+        `;
+      }
+
+      else if (activeCategory === "safety") {
+        tag.innerText = `Safety (${configState.safetyLanguage})`;
+        canvas.style.backgroundColor = "#FFFFFF";
+        canvas.style.color = "#0B0D10";
+        canvas.style.border = "2px solid #EA580C";
+        canvas.style.minHeight = "230px";
+
+        if (configState.safetyModel === "rules-board") {
+          const isSpan = configState.safetyLanguage === "Spanish";
+          canvas.innerHTML = `
+            <div class="bg-amk-orange text-white font-sign font-black py-1 px-3 uppercase tracking-wider text-xs flex justify-between items-center">
+              <span>${isSpan ? "REGLAS DEL TRABAJO" : "JOBSITE RULES"}</span>
+              <span class="text-[10px] font-normal">A&bull;M&bull;KING</span>
+            </div>
+            <div class="p-2 text-left text-[9px] font-sans leading-tight space-y-1 text-slate-800">
+              <p class="font-bold text-red-700 uppercase">${isSpan ? "TODOS LOS ACCIDENTES DEBEN REPORTARSE DE INMEDIATO" : "ALL ACCIDENTS & INCIDENTS MUST BE REPORTED IMMEDIATELY"}</p>
+              <p>&bull; ${isSpan ? "Cascos, gafas de seguridad y chalecos requeridos" : "Hard hats, safety glasses, and vests required at all times"}</p>
+              <p>&bull; ${isSpan ? "6' requiere proteccion contra caidas" : "6' fall protection required / 100% tie-off"}</p>
+              <p>&bull; ${isSpan ? "Limite de velocidad: 5 MPH" : "Speed limit 5 MPH at all times across all zones"}</p>
+            </div>
+            <div class="bg-slate-100 text-[9px] text-slate-500 font-mono py-1 border-t border-slate-300">
+              ${configState.safetyLanguage} &bull; ${configState.safetySize} Board
+            </div>
+          `;
+        } else if (configState.safetyModel === "custom-safety") {
+          canvas.innerHTML = `
+            <div class="bg-amk-orange text-white font-sign font-black py-1 px-3 uppercase tracking-widest text-xs">
+              SAFETY NOTICE &bull; PRESET I
+            </div>
+            <div class="my-auto py-3 font-sign font-bold text-xs uppercase text-slate-900 px-2">
+              ${configState.safetyCustomMsg || "CUSTOM SAFETY NOTICE"}
+            </div>
+            <div class="border-t border-slate-200 pt-1 text-[9px] text-slate-500 font-sign font-bold">
+              A&bull;M&bull;KING COMPLIANCE
+            </div>
+          `;
+        } else {
+          const osha = CATALOG_DATA.safety.oshaPresets.find(o => o.id === configState.safetyOshaPreset) || CATALOG_DATA.safety.oshaPresets[0];
+          canvas.innerHTML = `
+            <div class="${osha.color} font-sign font-black py-2 px-3 text-sm tracking-widest uppercase border-b">
+              ${osha.header}
+            </div>
+            <div class="my-auto py-4 font-sign font-bold text-xs text-slate-900 uppercase px-2">
+              ${osha.text}
+            </div>
+            <div class="border-t border-slate-200 pt-1 text-[9px] text-slate-500 font-sign font-bold">
+              A&bull;M&bull;KING
+            </div>
+          `;
+        }
+      }
+    }
+
+    // --- 7. CART / MANIFEST ENGINE ---
+    function addBundleToCart(bundleType) {
+      saveMeta();
+      if (bundleType === 'starter') {
+        cartManifest.push({
+          id: Date.now(),
+          name: "Complete Jobsite Starter Kit (Bundle)",
+          desc: "(1) 4'x8' Project Sign 6mm, (2) 3'x2' Directionals (Traffic & Office), (1) 2'x4' Rules Board, Pre-drilled Holes",
+          unitPrice: 841,
+          qty: 1,
+          lineTotal: 841
+        });
+      } else if (bundleType === 'directional') {
+        cartManifest.push({
+          id: Date.now(),
+          name: "Standard Site Wayfinding Bundle (Set of 4)",
+          desc: "(1) Preset A Traffic, (1) Preset K Office, (1) Preset D AM King Parking, (1) Preset M 5 MPH - 3'x2' 3mm w/ Holes",
+          unitPrice: 464,
+          qty: 1,
+          lineTotal: 464
+        });
+      } else if (bundleType === 'safety') {
+        cartManifest.push({
+          id: Date.now(),
+          name: "Safety & Compliance Master Bundle",
+          desc: "(1) 4'x8' 14-Point Jobsite Rules Board (6mm), (1) 36\"x24\" Caution Personnel Only, (1) AED Inside Unit Sign",
+          unitPrice: 638,
+          qty: 1,
+          lineTotal: 638
+        });
+      }
+
+      updateCartDisplay();
+      pulseCartBadge();
+    }
+
+    function addConfiguredItemToCart() {
+      saveMeta();
+      const unit = computeUnitPrice();
+      const qty = parseInt(document.getElementById("productQty").value, 10);
+      let name = "";
+      let desc = "";
+
+      if (activeCategory === "jobsite") {
+        name = `${configState.size === '4x8' ? "4'x8'" : "2'x4'"} Jobsite Project Sign`;
+        desc = `${configState.orientation}, ${configState.background}, ${configState.substrate.toUpperCase()}`;
+      } else if (activeCategory === "directionals") {
+        const p = CATALOG_DATA.directionals.presets.find(i => i.id === configState.directionalPreset);
+        name = `${configState.directionalSize === '3x2' ? "3'x2'" : '14"x20"'} Directional (${p.name})`;
+        desc = `Text: "${p.text}" | Substrate: ${configState.substrate.toUpperCase()}`;
+      } else if (activeCategory === "custom-dir") {
+        if (configState.customType === 'coming-soon-4x8') {
+          name = "4'x8' Architectural Development 'Coming Soon' Board";
+          desc = `Facility: ${configState.comingSoonClient} | ${configState.substrate.toUpperCase()}`;
+        } else {
+          name = `Preset N Custom Directional (${configState.customType.includes('4x8') ? "4'x8'" : "2'x4'"})`;
+          desc = `Copy: "${configState.customText.substring(0, 32)}..." | ${configState.substrate.toUpperCase()}`;
+        }
+      } else if (activeCategory === "tarps") {
+        name = "10' x 12' Heavy-Duty Perimeter Fence Tarp";
+        desc = `${configState.tarpLogo === 'with-logo' ? 'With 59"x80" A M King Logo' : 'Solid Black (No Logo)'} (18 oz Vinyl)`;
+      } else if (activeCategory === "safety") {
+        name = `Safety Board (${configState.safetyModel})`;
+        desc = `Size: ${configState.safetySize} | Lang: ${configState.safetyLanguage} | Substrate: ${configState.substrate}`;
+      }
+
+      const addOnKeys = Object.keys(configState.selectedAddOns);
+      if (addOnKeys.length > 0) {
+        desc += ` [Add-ons: ${addOnKeys.join(', ')}]`;
+      }
+
+      cartManifest.push({
+        id: Date.now(),
+        name: name,
+        desc: desc,
+        unitPrice: unit,
+        qty: qty,
+        lineTotal: unit * qty
+      });
+
+      document.getElementById("productQty").value = "1";
+      updateCartDisplay();
+      pulseCartBadge();
+    }
+
+    function removeCartItem(itemId) {
+      cartManifest = cartManifest.filter(item => item.id !== itemId);
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      const count = cartManifest.reduce((acc, curr) => acc + curr.qty, 0);
+      const sum = cartManifest.reduce((acc, curr) => acc + curr.lineTotal, 0);
+
+      document.getElementById("cartCountBadge").innerText = count;
+      document.getElementById("sideCartCount").innerText = `${count} Items`;
+      document.getElementById("sideSubtotal").innerText = `$${sum.toFixed(2)}`;
+      document.getElementById("sideTotal").innerText = `$${sum.toFixed(2)}`;
+      document.getElementById("drawerTotal").innerText = `$${sum.toFixed(2)}`;
+
+      // Sidebar list
+      const sideBox = document.getElementById("sideCartItems");
+      if (cartManifest.length === 0) {
+        sideBox.innerHTML = `<p class="text-slate-500 italic py-6 text-center">Your requisition is currently empty. Choose a pre-built bundle or configure items above.</p>`;
+      } else {
+        sideBox.innerHTML = cartManifest.map(item => `
+          <div class="flex items-start justify-between border-b border-amk-800 pb-2.5">
+            <div class="pr-2">
+              <span class="text-white font-bold block leading-tight">${item.qty}x ${item.name}</span>
+              <span class="text-[10px] text-slate-400 block">${item.desc}</span>
+              <span class="text-[10px] text-amber-400 font-mono font-bold">$${item.unitPrice} each</span>
+            </div>
+            <div class="text-right">
+              <span class="font-bold text-white font-mono">$${item.lineTotal.toFixed(2)}</span>
+              <button onclick="removeCartItem(${item.id})" class="text-red-400 hover:text-red-300 ml-2 text-sm">&times;</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Drawer list
+      const drawerBox = document.getElementById("drawerItemList");
+      if (cartManifest.length === 0) {
+        drawerBox.innerHTML = `
+          <div class="text-center py-16 text-slate-500">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <p class="font-medium text-sm text-slate-400">Requisition currently empty.</p>
+            <p class="text-xs text-slate-500 mt-1">Configure packages or catalog items to build this order.</p>
+          </div>
+        `;
+      } else {
+        drawerBox.innerHTML = cartManifest.map((item, idx) => `
+          <div class="bg-amk-950 border border-amk-800 rounded-xl p-3.5 flex items-start justify-between">
+            <div class="space-y-1">
+              <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Item #${idx+1} &bull; Qty: ${item.qty}</span>
+              <h5 class="text-xs font-bold text-white leading-snug">${item.name}</h5>
+              <p class="text-[11px] text-slate-400">${item.desc}</p>
+              <div class="text-xs font-mono font-bold text-amber-400 pt-1">
+                $${item.unitPrice} ea &bull; Line Total: $${item.lineTotal.toFixed(2)}
+              </div>
+            </div>
+            <button onclick="removeCartItem(${item.id})" class="text-slate-400 hover:text-fs-accent p-1 transition" title="Remove item">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function pulseCartBadge() {
+      const badge = document.getElementById("cartCountBadge");
+      badge.classList.add("scale-125", "bg-amber-400");
+      setTimeout(() => badge.classList.remove("scale-125", "bg-amber-400"), 250);
+    }
+
+    function toggleCartDrawer() {
+      const drawer = document.getElementById("cartDrawer");
+      const overlay = document.getElementById("drawerOverlay");
+      const isClosed = drawer.classList.contains("translate-x-full");
+
+      if (isClosed) {
+        drawer.classList.remove("translate-x-full");
+        overlay.classList.remove("hidden");
+      } else {
+        drawer.classList.add("translate-x-full");
+        overlay.classList.add("hidden");
+      }
+    }
+
+    // --- 8. APPROVAL ENGINE & DISPATCH GENERATOR ---
+    function processApprovalSubmission() {
+      saveMeta();
+      if (cartManifest.length === 0) {
+        alert("Please add at least one sign or package to the requisition before submitting.");
+        return;
+      }
+
+      const projName = document.getElementById("metaProjectName").value.trim() || "Untitled Project";
+      const poNum = document.getElementById("metaPONumber").value.trim() || "Pending PO";
+      const address = document.getElementById("metaAddress").value.trim() || "Jobsite Address Not Specified";
+      const reqName = document.getElementById("metaRequesterName").value.trim() || "Project Superintendent";
+      const reqPhone = document.getElementById("metaRequesterPhone").value.trim();
+      const reqEmail = document.getElementById("metaRequesterEmail").value.trim();
+      const approverEmail = document.getElementById("metaApproverEmail").value.trim() || DEFAULT_APPROVER;
+
+      if (!reqEmail) {
+        alert("Please provide the Requester Email so you receive a verified confirmation copy.");
+        scrollToProjectMeta();
+        toggleCartDrawer();
+        return;
+      }
+
+      const totalVal = cartManifest.reduce((acc, curr) => acc + curr.lineTotal, 0);
+
+      // Itemized Lines
+      let itemLines = cartManifest.map((item, idx) => 
+        `  ${idx+1}. [${item.qty}x] ${item.name}\n     Specs: ${item.desc}\n     Unit: $${item.unitPrice.toFixed(2)} | Subtotal: $${item.lineTotal.toFixed(2)}`
+      ).join('\n\n');
+
+      // 1. Build the child one-click mailto link for Boss to send to FastSigns
+      const fastSignsSubject = encodeURIComponent(`APPROVED SIGN ORDER: ${projName} (PO: ${poNum})`);
+      const fastSignsBody = encodeURIComponent(
+`FASTSIGNS Charlotte Production Intake (hannah.ewing@fastsigns.com),
+
+This A M King signage requisition has been reviewed and APPROVED by management for fabrication.
+
+==================================================
+PROJECT DETAILS & AUTHORIZATION
+==================================================
+Project Name: ${projName}
+Job # / PO: ${poNum}
+Delivery Address: ${address}
+Requester / Super: ${reqName} (${reqPhone} / ${reqEmail})
+Approved By: ${approverEmail}
+Total Order Value: $${totalVal.toFixed(2)}
+
+==================================================
+FABRICATION MANIFEST
+==================================================
+${itemLines}
+
+==================================================
+Please confirm production schedule and estimated delivery date to the field office.`
+      );
+
+      const oneClickBossUrl = `mailto:${FASTSIGNS_EMAIL}?cc=${encodeURIComponent(reqEmail)}&subject=${fastSignsSubject}&body=${fastSignsBody}`;
+
+      // 2. Build the primary email sent by the Requester to the Boss
+      const bossSubject = encodeURIComponent(`APPROVAL NEEDED: Signage Requisition - ${projName} (PO: ${poNum})`);
+      const bossBody = 
+`Hi,
+
+I have configured the following standardized sign package for ${projName} (PO: ${poNum}).
+Please review the itemized requisition below and authorize release for FASTSIGNS fabrication.
+
+==================================================
+PROJECT SUMMARY
+==================================================
+Project: ${projName}
+PO / Cost Code: ${poNum}
+Jobsite Delivery: ${address}
+Requested By: ${reqName} (${reqEmail})
+Total Requisition Amount: $${totalVal.toFixed(2)}
+
+==================================================
+ITEMS TO BE FABRICATED
+==================================================
+${itemLines}
+
+==================================================
+HOW TO APPROVE & TRANSMIT TO FASTSIGNS:
+==================================================
+Click the link below to open a pre-filled release email directly to FASTSIGNS Charlotte:
+
+👉 CLICK TO APPROVE & SEND TO FASTSIGNS:
+${oneClickBossUrl}
+
+Alternatively, simply FORWARD this email to ${FASTSIGNS_EMAIL} with the word "APPROVED".`;
+
+      activeMailtoUrl = `mailto:${approverEmail}?cc=${encodeURIComponent(reqEmail)}&subject=${bossSubject}&body=${encodeURIComponent(bossBody)}`;
+      clipboardFormattedText = bossBody;
+
+      // Populate Modal
+      document.getElementById("modalTargetApprover").innerText = approverEmail;
+      document.getElementById("modalTargetRequester").innerText = reqEmail;
+      document.getElementById("modalPayloadText").innerText = bossBody;
+
+      // Open Modal
+      document.getElementById("approvalModal").classList.remove("hidden");
+    }
+
+    function dispatchManagerEmail() {
+      if (activeMailtoUrl) {
+        window.location.href = activeMailtoUrl;
+      }
+    }
+
+    function copyModalContent() {
+      navigator.clipboard.writeText(clipboardFormattedText).then(() => {
+        alert("Order approval email text copied to clipboard!");
+      });
+    }
+
+    function closeModal() {
+      document.getElementById("approvalModal").classList.add("hidden");
+    }
+
+    function copyErpManifest() {
+      saveMeta();
+      const proj = document.getElementById("metaProjectName").value.trim();
+      const po = document.getElementById("metaPONumber").value.trim();
+      const addr = document.getElementById("metaAddress").value.trim();
+      const total = cartManifest.reduce((acc, curr) => acc + curr.lineTotal, 0);
+
+      const erpText = `A M KING & FASTSIGNS REQUISITION
+PROJECT: ${proj} | PO: ${po}
+DELIVERY: ${addr}
+TOTAL: $${total.toFixed(2)}
+
+ITEMS:
+${cartManifest.map((i, idx) => `${idx+1}. [${i.qty}x] ${i.name} - ${i.desc} - $${i.lineTotal.toFixed(2)}`).join('\n')}`;
+
+      navigator.clipboard.writeText(erpText).then(() => {
+        alert("Manifest copied for Procore / CoreBridge!");
+      });
+    }
+
+    // Print preparation
+    window.onbeforeprint = () => {
+      saveMeta();
+      const proj = document.getElementById("metaProjectName").value;
+      const po = document.getElementById("metaPONumber").value;
+      const addr = document.getElementById("metaAddress").value;
+      const req = document.getElementById("metaRequesterName").value;
+      const total = cartManifest.reduce((acc, curr) => acc + curr.lineTotal, 0);
+
+      document.getElementById("printDetails").innerHTML = `
+        <p><strong>Project:</strong> ${proj} | <strong>PO / Job #:</strong> ${po}</p>
+        <p><strong>Delivery Address:</strong> ${addr}</p>
+        <p><strong>Requester:</strong> ${req}</p>
+        <p><strong>Total Approved Value:</strong> $${total.toFixed(2)}</p>
+      `;
+
+      document.getElementById("printItems").innerHTML = `
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+          <thead>
+            <tr style="border-bottom: 2px solid #000; text-align: left;">
+              <th style="padding: 6px;">Item</th>
+              <th style="padding: 6px;">Description</th>
+              <th style="padding: 6px;">Qty</th>
+              <th style="padding: 6px;">Unit</th>
+              <th style="padding: 6px;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${cartManifest.map((item, idx) => `
+              <tr style="border-bottom: 1px solid #ccc;">
+                <td style="padding: 6px;">#${idx+1}</td>
+                <td style="padding: 6px;"><strong>${item.name}</strong><br><small>${item.desc}</small></td>
+                <td style="padding: 6px;">${item.qty}</td>
+                <td style="padding: 6px;">$${item.unitPrice.toFixed(2)}</td>
+                <td style="padding: 6px;">$${item.lineTotal.toFixed(2)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    };
+  </script>
+</body>
+</html>
